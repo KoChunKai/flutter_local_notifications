@@ -57,17 +57,27 @@ public class NotificationUtils {
     }
 
     private void updateAlarmStatus(AlarmData alarmData, AlarmPayload payload) {
-        if (payload.getInterval() != null && (payload.getInterval().getRepeat() == null || check(payload.getInterval().getRepeat()))) {
-            updateIntervalStatus(alarmData, payload);
+        if (alarmData == null || payload == null) {
+            return;
         }
 
-        if (payload.getReminder() != null && (payload.getReminder().getRepeat() == null || check(payload.getReminder().getRepeat()))) {
-            updateReminderStatus(alarmData, payload);
+        try {
+            if (payload.getInterval() != null && check(payload.getInterval().getRepeat())) {
+                updateIntervalStatus(alarmData, payload);
+            }
+
+            if (payload.getReminder() != null && check(payload.getReminder().getRepeat())) {
+                updateReminderStatus(alarmData, payload);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     private boolean check(WeekOfDays repeat) {
-        return !repeat.getMonday() && !repeat.getTuesday() && !repeat.getWednesday() && !repeat.getThursday() && !repeat.getFriday() && !repeat.getSaturday() && !repeat.getSunday();
+        return repeat == null || (!repeat.getMonday() && !repeat.getTuesday() &&
+                !repeat.getWednesday() && !repeat.getThursday() &&
+                !repeat.getFriday() && !repeat.getSaturday() && !repeat.getSunday());
     }
 
     private void updateIntervalStatus(AlarmData alarmData, AlarmPayload payload) {

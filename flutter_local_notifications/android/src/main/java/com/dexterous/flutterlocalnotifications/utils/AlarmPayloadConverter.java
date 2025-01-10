@@ -302,7 +302,7 @@ public class AlarmPayloadConverter {
                             switch (name) {
                                 case "id":
                                     if (in.peek() != JsonToken.NULL) {
-                                        interval.setId(in.nextInt());
+                                        interval.setId(in.nextLong());
                                     } else {
                                         in.nextNull();
                                     }
@@ -383,7 +383,7 @@ public class AlarmPayloadConverter {
                             switch (name) {
                                 case "id":
                                     if (in.peek() != JsonToken.NULL) {
-                                        reminder.setId(in.nextInt());
+                                        reminder.setId(in.nextLong());
                                     } else {
                                         in.nextNull();
                                     }
