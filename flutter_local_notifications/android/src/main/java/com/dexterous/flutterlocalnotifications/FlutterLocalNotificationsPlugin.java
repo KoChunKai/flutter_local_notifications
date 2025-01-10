@@ -201,7 +201,7 @@ public class FlutterLocalNotificationsPlugin
   private static final String INPUT_RESULT = "FlutterLocalNotificationsPluginInputResult";
   private static final String INPUT = "input";
   private static final String NOTIFICATION_RESPONSE_TYPE = "notificationResponseType";
-  static String NOTIFICATION_DETAILS = "notificationDetails";
+  public static String NOTIFICATION_DETAILS = "notificationDetails";
   static Gson gson;
   private MethodChannel channel;
   private Context applicationContext;
@@ -235,7 +235,7 @@ public class FlutterLocalNotificationsPlugin
     }
   }
 
-  static void scheduleNextNotification(Context context, NotificationDetails notificationDetails) {
+  public static void scheduleNextNotification(Context context, NotificationDetails notificationDetails) {
     try {
       if (notificationDetails.scheduledNotificationRepeatFrequency != null) {
         zonedScheduleNextNotification(context, notificationDetails);
@@ -480,7 +480,7 @@ public class FlutterLocalNotificationsPlugin
   }
 
   @NonNull
-  static Gson buildGson() {
+  public static Gson buildGson() {
     if (gson == null) {
       RuntimeTypeAdapterFactory<StyleInformation> styleInformationAdapter =
           RuntimeTypeAdapterFactory.of(StyleInformation.class)
@@ -521,7 +521,7 @@ public class FlutterLocalNotificationsPlugin
     editor.putString(SCHEDULED_NOTIFICATIONS, json).apply();
   }
 
-  static void removeNotificationFromCache(Context context, Integer notificationId) {
+  public static void removeNotificationFromCache(Context context, Integer notificationId) {
     ArrayList<NotificationDetails> scheduledNotifications = loadScheduledNotifications(context);
     for (Iterator<NotificationDetails> it = scheduledNotifications.iterator(); it.hasNext(); ) {
       NotificationDetails notificationDetails = it.next();
@@ -1262,7 +1262,7 @@ public class FlutterLocalNotificationsPlugin
     return true;
   }
 
-  static void showNotification(Context context, NotificationDetails notificationDetails) {
+  public static void showNotification(Context context, NotificationDetails notificationDetails) {
     Notification notification = createNotification(context, notificationDetails);
     NotificationManagerCompat notificationManagerCompat = getNotificationManager(context);
 
