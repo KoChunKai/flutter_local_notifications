@@ -2,7 +2,7 @@ package com.dexterous.flutterlocalnotifications.models;
 
 public class Reminder {
     private Long id;
-    private Time remindTime;
+    private CustomTime remindTime;
     private WeekOfDays repeat;
     private Boolean isSoundAndVibration;
     private Boolean isActivity;
@@ -15,11 +15,11 @@ public class Reminder {
         this.id = id;
     }
 
-    public Time getRemindTime() {
+    public CustomTime getRemindTime() {
         return remindTime;
     }
 
-    public void setRemindTime(Time remindTime) {
+    public void setRemindTime(CustomTime remindTime) {
         this.remindTime = remindTime;
     }
 

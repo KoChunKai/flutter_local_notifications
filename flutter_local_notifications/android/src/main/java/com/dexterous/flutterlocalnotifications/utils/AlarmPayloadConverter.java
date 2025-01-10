@@ -8,7 +8,6 @@ import com.dexterous.flutterlocalnotifications.models.BabyEventTypeData;
 import com.dexterous.flutterlocalnotifications.models.CustomTime;
 import com.dexterous.flutterlocalnotifications.models.DoNotDisturb;
 import com.dexterous.flutterlocalnotifications.models.Reminder;
-import com.dexterous.flutterlocalnotifications.models.Time;
 import com.dexterous.flutterlocalnotifications.models.WeekOfDays;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -353,7 +352,7 @@ public class AlarmPayloadConverter {
                         }
                         if (value.getRemindTime() != null) {
                             out.name("remindTime");
-                            gson.toJson(value.getRemindTime(), Time.class, out);
+                            gson.toJson(value.getRemindTime(), CustomTime.class, out);
                         }
                         if (value.getRepeat() != null) {
                             out.name("repeat");
@@ -389,7 +388,7 @@ public class AlarmPayloadConverter {
                                     }
                                     break;
                                 case "remindTime":
-                                    reminder.setRemindTime(gson.fromJson(in, Time.class));
+                                    reminder.setRemindTime(gson.fromJson(in, CustomTime.class));
                                     break;
                                 case "repeat":
                                     reminder.setRepeat(gson.fromJson(in, WeekOfDays.class));
