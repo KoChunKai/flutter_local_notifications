@@ -1,10 +1,16 @@
 package com.dexterous.flutterlocalnotifications.models;
 
+
 public class AlarmPayload {
     private AlarmInterval interval;
     private Reminder reminder;
     private BabyEventType type;
 
+    // 空的建構子供 Gson 使用
+    public AlarmPayload() {
+    }
+
+    // Getters and Setters
     public AlarmInterval getInterval() {
         return interval;
     }

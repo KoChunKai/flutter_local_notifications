@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.Keep;
@@ -12,13 +11,13 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.dexterous.flutterlocalnotifications.models.AlarmPayload;
 import com.dexterous.flutterlocalnotifications.models.NotificationDetails;
+import com.dexterous.flutterlocalnotifications.utils.AlarmPayloadConverter;
 import com.dexterous.flutterlocalnotifications.utils.NotificationUtils;
 import com.dexterous.flutterlocalnotifications.utils.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 
 /**
  * Created by michaelbui on 24/3/18.
@@ -92,8 +91,7 @@ public class CustomScheduledNotificationReceiver extends BroadcastReceiver {
 
     void updateSharedPreferences(Context context, String notificationDetailsJson, String payload) {
         try {
-            Gson gson = new Gson();
-            AlarmPayload alarmPayload = gson.fromJson(payload, AlarmPayload.class);
+            AlarmPayload alarmPayload = AlarmPayloadConverter.fromJson(payload);
             NotificationUtils cuboNotificationUtils = new NotificationUtils(context, FlutterLocalNotificationsPlugin.methodNotificationChannel);
             cuboNotificationUtils.handleNotification(alarmPayload);
         } catch (Exception e) {
@@ -101,4 +99,5 @@ public class CustomScheduledNotificationReceiver extends BroadcastReceiver {
             Log.d(TAG, "updateSharedPreferences error:" + e);
         }
     }
+
 }
