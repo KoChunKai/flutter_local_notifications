@@ -25,7 +25,6 @@ public class ScheduledNotificationReceiver extends BroadcastReceiver {
   @Override
   @SuppressWarnings("deprecation")
   public void onReceive(final Context context, Intent intent) {
-    Log.e(TAG, "Custom by kochunkai");
     String notificationDetailsJson =
         intent.getStringExtra(FlutterLocalNotificationsPlugin.NOTIFICATION_DETAILS);
     if (StringUtils.isNullOrEmpty(notificationDetailsJson)) {
