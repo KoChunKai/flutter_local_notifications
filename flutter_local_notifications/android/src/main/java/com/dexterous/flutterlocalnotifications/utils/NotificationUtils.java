@@ -39,11 +39,11 @@ public class NotificationUtils {
 
         if (jsonString != null) {
             try {
-                AlarmData alarmData = gson.fromJson(jsonString, AlarmData.class);
+                AlarmData alarmData = AlarmPayloadConverter.alarmDataFromJson(jsonString);
                 updateAlarmStatus(alarmData, alarmPayload);
 
                 // Save updated data back to SharedPreferences
-                String updatedJson = gson.toJson(alarmData);
+                String updatedJson = AlarmPayloadConverter.alarmDataToJson(alarmData);
                 preferences.edit()
                         .putString(ALARM_DATA_KEY, updatedJson)
                         .apply();
@@ -148,34 +148,5 @@ public class NotificationUtils {
         mainHandler.post(() -> {
             notificationChannel.invokeMethod("onNotificationReceived", updatedJson);
         });
-    }
-
-    public void saveAlarmData(AlarmData alarmData) {
-        SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String jsonString = gson.toJson(alarmData);
-        preferences.edit()
-                .putString(ALARM_DATA_KEY, jsonString)
-                .apply();
-    }
-
-    public AlarmData getAlarmData() {
-        SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        String jsonString = preferences.getString(ALARM_DATA_KEY, null);
-        if (jsonString != null) {
-            try {
-                return gson.fromJson(jsonString, AlarmData.class);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-        return null;
-    }
-
-    public void clearAlarmData() {
-        SharedPreferences preferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        preferences.edit()
-                .remove(ALARM_DATA_KEY)
-                .apply();
     }
 }
