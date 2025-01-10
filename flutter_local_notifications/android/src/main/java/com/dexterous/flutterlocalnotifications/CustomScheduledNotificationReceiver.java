@@ -10,7 +10,9 @@ import android.util.Log;
 import androidx.annotation.Keep;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.dexterous.flutterlocalnotifications.models.AlarmPayload;
 import com.dexterous.flutterlocalnotifications.models.NotificationDetails;
+import com.dexterous.flutterlocalnotifications.utils.NotificationUtils;
 import com.dexterous.flutterlocalnotifications.utils.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -72,24 +74,31 @@ public class CustomScheduledNotificationReceiver extends BroadcastReceiver {
 
             FlutterLocalNotificationsPlugin.showNotification(context, notificationDetails);
             FlutterLocalNotificationsPlugin.scheduleNextNotification(context, notificationDetails);
+            updateSharedPreferences(context, notificationDetailsJson, payload);
+
         }
 
-        if (FlutterLocalNotificationsPlugin.methodNotificationChannel != null) {
-            HashMap<String, Object> arguments = new HashMap<>();
-            arguments.put("payload", payload);
-            arguments.put("notificationId", notificationId);
-
-            FlutterLocalNotificationsPlugin.methodNotificationChannel.invokeMethod(
-                    "onNotificationReceived",
-                    arguments
-            );
-        }
-        updateSharedPreferences(context, notificationDetailsJson);
+//        if (FlutterLocalNotificationsPlugin.methodNotificationChannel != null) {
+//            HashMap<String, Object> arguments = new HashMap<>();
+//            arguments.put("payload", payload);
+//            arguments.put("notificationId", notificationId);
+//
+//            FlutterLocalNotificationsPlugin.methodNotificationChannel.invokeMethod(
+//                    "onNotificationReceived",
+//                    arguments
+//            );
+//        }
     }
 
-    void updateSharedPreferences(Context context, String notificationDetailsJson) {
-        Log.d(TAG, "notificationDetailsJson:" + notificationDetailsJson);
-        SharedPreferences spf = context.getSharedPreferences("FlutterSharedPreferences", Context.MODE_PRIVATE);
-        Log.d(TAG, "updateSharedPreferences:" + spf.getString("flutter.alarmDataKey", "null"));
+    void updateSharedPreferences(Context context, String notificationDetailsJson, String payload) {
+        try {
+            Gson gson = new Gson();
+            AlarmPayload alarmPayload = gson.fromJson(payload, AlarmPayload.class);
+            NotificationUtils cuboNotificationUtils = new NotificationUtils(context, FlutterLocalNotificationsPlugin.methodNotificationChannel);
+            cuboNotificationUtils.handleNotification(alarmPayload);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.d(TAG, "updateSharedPreferences error:" + e);
+        }
     }
 }
